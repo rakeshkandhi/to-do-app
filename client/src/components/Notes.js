@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Note from './Note';
+import Addnote from '../CreateNote';
 // import axios from 'axios';
 
 
@@ -9,13 +10,33 @@ export default function Notes() {
     const [notes, setNotes] = useState([]);
     async function getAllNotes() {
         const res = await fetch('/todo');
-        console.log(res);
         const data = await res.json();
         setNotes(data);
     }
     useEffect(() => {
         getAllNotes();
     }, []);
+
+    async function saveNote(payload) {
+        const res = await fetch('/todo', {
+            method: "POST",
+            body: JSON.stringify(payload),
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        });
+        getAllNotes();
+    }
+
+
+    async function deleteNote(id) {
+        const res = await fetch(`/todo/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        })
+    }
 
     // code for fetching data from endpoint using only useEffect
     // useEffect(() => {
@@ -43,18 +64,14 @@ export default function Notes() {
     return (
         <div className='container my-3'>
             <h1>Take your notes</h1>
-            <div className="card">
-                <div className="card-body">
-                    <h5 className='card-title'>Add a note</h5>
-                    <div className='form-group'>
-                        <textarea className="card-body" rows="3" ></textarea>
-                    </div>
-                    <button className="btn btn-primary" id='addBtn'>Add Note</button>
-                </div>
-            </div>
+            <Addnote saveNoteFun={saveNote} />
+
+
             <hr />
             <h1>Your Notes</h1>
             <hr />
+
+
             <div id='notes' className='row conitainer-fluid'>
                 {notes.length === 0 ? (
                     <span className='d-block p-2 text-bg-dark'>No saved notes</span>

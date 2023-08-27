@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
-// app.use(json);
+
+
 // JSON data for server
 let todo_items = [
     { "id": 1, "title": "Titile 1", "content": "Todo item 1" },
@@ -49,6 +50,19 @@ app.post("/todo", (req, res) => {
     todo_items.push(item);
     res.json(item);
 });
+
+// Delete a product
+app.delete('/todo/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const todoIndex = todo_items.findIndex(p => p.id === id);
+    if (todoIndex === -1) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+    const deletedProduct = todo_items[todoIndex];
+    todo_items.splice(todoIndex, 1);
+    res.json(deletedProduct);
+});
+
 // Server is running on port 5000
 app.listen(5000, () => {
     console.log('Server is running on port 5000');
