@@ -1,7 +1,14 @@
 import './App.css';
+import Nav from './Nav';
+import Notes from './Notes';
 
 function App() {
-  return (<h1>hello</h1>);
+  return (
+    <>
+      <Nav />
+      <Notes />
+    </>
+  )
 }
 
 export default App;
