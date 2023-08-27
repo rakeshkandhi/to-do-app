@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Note from './Note';
+// import axios from 'axios';
 
+
+// code for fetching data from endpoint using async and await
 export default function Notes() {
     const [notes, setNotes] = useState([]);
     async function getAllNotes() {
@@ -12,6 +16,28 @@ export default function Notes() {
     useEffect(() => {
         getAllNotes();
     }, []);
+
+    // code for fetching data from endpoint using only useEffect
+    // useEffect(() => {
+    //     fetch('/todo')
+    //         .then(res => res.json())
+    //         .then(data => setNotes(data)).catch(error => console.log(error));
+    // },[])
+
+    // code for fetching data from endpoint using axios() and async and await)
+    // useEffect(() => {
+    //     const getAllNotes = async () => {
+    //         try{
+    //             const res = await axios.get('/todo');
+    //             setNotes(res.data);
+    //         }
+    //         catch(error){
+    //             console.log(error);
+    //         }   
+
+    //     }
+    //     getAllNotes();
+    // },[])
 
 
     return (
@@ -34,14 +60,7 @@ export default function Notes() {
                     <span className='d-block p-2 text-bg-dark'>No saved notes</span>
                 ) : (
                     notes.map((note, index) => {
-                        return (
-                            <div className="card" key={index}>
-                                <div className="card-body">
-                                    <h5 className='card-title'>{note.title}</h5>
-                                    <p className='card-text'>{note.content}</p>
-                                </div>
-                            </div>
-                        )
+                        return <Note title={note.title} content={note.content} index={index} />
                     }
                     ))}
             </div>

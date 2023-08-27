@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
-app.use(json);
+// app.use(json);
 // JSON data for server
 let todo_items = [
     { "id": 1, "title": "Titile 1", "content": "Todo item 1" },
