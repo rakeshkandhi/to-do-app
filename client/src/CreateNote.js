@@ -16,7 +16,7 @@ export default function Addnote({saveNoteFun}) {
                             onChange={(event) => {
                                 setTitle(event.currentTarget.value);
                             }} />
-                        <label for="floatingInput">Title</label>
+                        <label htmlFor="floatingInput">Title</label>
                     </div>
                     <textarea className="form-control"
                         rows="3"
@@ -27,12 +27,13 @@ export default function Addnote({saveNoteFun}) {
 
                     </textarea>
                 </div>
-                <button className="btn btn-primary" id='addBtn'
+                <button type="button" className="btn btn-dark" id='addBtn'
                     onClick={() => {
                         saveNoteFun({title,content});
-                       
                     }}>Add Note</button>
+
             </div>
         </div>
     )
+
 }

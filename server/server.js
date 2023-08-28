@@ -22,16 +22,16 @@ app.get('/', (req, res) => {
 
 // Get all todo
 app.get('/todo', (req, res) => {
-    res.json(todo);
+    res.json(todo_items);
 });
 
 
 // Get a single todo by ID
 app.get('/todo/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const todo = todo.find(p => p.id === id);
+    const todo = todo_items.find(p => p.id === id);
     if (!todo) {
-        return res.status(404).json({ error: 'Product not found' });
+        return res.status(404).json({ error: 'Item not found' });
     }
     res.json(todo);
 });
@@ -39,12 +39,14 @@ app.get('/todo/:id', (req, res) => {
 
 // Create a new todo
 app.post('/todo', (req, res) => {
-    const { id, name, price } = req.body;
-    if (!id || !name || !price) {
+    const id = todo_items.length + 1;
+    const { title, content } = req.body;
+    if (!id || !title || !content) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
-    const newTodo = { id, name, price };
-    todo.push(newTodo);
+    
+    const newTodo = { id,title, content };
+    todo_items.push(newTodo);
     res.status(201).json(newTodo);
 });
 
@@ -52,13 +54,13 @@ app.post('/todo', (req, res) => {
 // Update a todo
 app.put('/todo/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const { name, price } = req.body;
-    const todoIndex = todo.findIndex(p => p.id === id);
+    const { title, content } = req.body;
+    const todoIndex = todo_items.findIndex(p => p.id === id);
     if (todoIndex === -1) {
-        return res.status(404).json({ error: 'Product not found' });
+        return res.status(404).json({ error: 'Item not found' });
     }
-    const updateTodo = { ...todo[todoIndex], name, price };
-    todo[todoIndex] = updateTodo;
+    const updateTodo = { ...todo_items[todoIndex], title, content };
+    todo_items[todoIndex] = updateTodo;
     res.json(updateTodo);
 });
 
@@ -66,12 +68,12 @@ app.put('/todo/:id', (req, res) => {
 // Delete a todo
 app.delete('/todo/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const todoIndex = todo.findIndex(p => p.id === id);
+    const todoIndex = todo_items.findIndex(p => p.id === id);
     if (todoIndex === -1) {
-        return res.status(404).json({ error: 'Product not found' });
+        return res.status(404).json({ error: 'Item not found' });
     }
-    const deletedTodo = todo[todoIndex];
-    todo.splice(todoIndex, 1);
+    const deletedTodo = todo_items[todoIndex];
+    todo_items.splice(todoIndex, 1);
     res.json(deletedTodo);
 });
 

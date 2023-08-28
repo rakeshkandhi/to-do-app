@@ -25,6 +25,8 @@ export default function Notes() {
                 "Content-Type": "application/json; charset=utf-8"
             }
         });
+        const data = await res.json();
+        console.log(`Saved note: ${JSON.stringify(data)}`);
         getAllNotes();
     }
 
@@ -36,14 +38,30 @@ export default function Notes() {
                 "Content-Type": "application/json; charset=utf-8"
             }
         })
+        const data = await res.json();
+        console.log(`deletd note: ${JSON.stringify(data)}`);
+        getAllNotes();
     }
 
+
+    async function updateNote(id, payload) {
+        await fetch(`/todo/${id}`, {
+            method: "PUT",
+            body: JSON.stringify(payload),
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        })
+        getAllNotes();
+    }
     // code for fetching data from endpoint using only useEffect
     // useEffect(() => {
     //     fetch('/todo')
     //         .then(res => res.json())
     //         .then(data => setNotes(data)).catch(error => console.log(error));
     // },[])
+
+
 
     // code for fetching data from endpoint using axios() and async and await)
     // useEffect(() => {
@@ -77,7 +95,11 @@ export default function Notes() {
                     <span className='d-block p-2 text-bg-dark'>No saved notes</span>
                 ) : (
                     notes.map((note, index) => {
-                        return <Note title={note.title} content={note.content} index={index} />
+                        return <Note
+                         noteItem={note}
+                          index={index}
+                           deleteFun={deleteNote} 
+                           updateFun={updateNote} />
                     }
                     ))}
             </div>
