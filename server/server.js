@@ -12,56 +12,71 @@ let todo_items = [
     { "id": 4, "title": "Titile 4", "content": "Todo item 4" },
 ];
 
-// home page of the server
-app.get("/", (req, res) => {
-    res.json({
-        message:
-            "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes.",
-    });
+
+
+// Get server home page
+app.get('/', (req, res) => {
+    res.send("This is the server home page");
 });
 
-// Get all todo items
+
+// Get all todo
 app.get('/todo', (req, res) => {
-    res.json(todo_items);
-});
-
-// Get particular todo item
-app.get("/todo/:id", (req, res) => {
-    const id = req.params.id;
-    const item = todo_items.find((item) => item.id == id);
-    if (!item) {
-        res.status(400).json({ "error": "Todo item not found." });
-        return;
-    }
-    res.json(item);
+    res.json(todo);
 });
 
 
-// create the post request to add a todo item
-app.post("/todo", (req, res) => {
-    const item = {
-        id: req.body.id,
-        title: req.body.title,
-        content: req.body.content,
-    };
-    if (!item.content || !item.title) {
-        return res.status(400).json({ "error": "Missing required fields" });
-    }
-    todo_items.push(item);
-    res.json(item);
-});
-
-// Delete a product
-app.delete('/todo/:id', (req, res) => {
+// Get a single todo by ID
+app.get('/todo/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const todoIndex = todo_items.findIndex(p => p.id === id);
+    const todo = todo.find(p => p.id === id);
+    if (!todo) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(todo);
+});
+
+
+// Create a new todo
+app.post('/todo', (req, res) => {
+    const { id, name, price } = req.body;
+    if (!id || !name || !price) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    const newTodo = { id, name, price };
+    todo.push(newTodo);
+    res.status(201).json(newTodo);
+});
+
+
+// Update a todo
+app.put('/todo/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name, price } = req.body;
+    const todoIndex = todo.findIndex(p => p.id === id);
     if (todoIndex === -1) {
         return res.status(404).json({ error: 'Product not found' });
     }
-    const deletedProduct = todo_items[todoIndex];
-    todo_items.splice(todoIndex, 1);
-    res.json(deletedProduct);
+    const updateTodo = { ...todo[todoIndex], name, price };
+    todo[todoIndex] = updateTodo;
+    res.json(updateTodo);
 });
+
+
+// Delete a todo
+app.delete('/todo/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const todoIndex = todo.findIndex(p => p.id === id);
+    if (todoIndex === -1) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+    const deletedTodo = todo[todoIndex];
+    todo.splice(todoIndex, 1);
+    res.json(deletedTodo);
+});
+
+
+
 
 // Server is running on port 5000
 app.listen(5000, () => {
