@@ -1,5 +1,5 @@
 import { useState } from "react";
-export default function Addnote({saveNoteFun}) {
+export default function Addnote({ saveNoteFun }) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -29,7 +29,7 @@ export default function Addnote({saveNoteFun}) {
                 </div>
                 <button type="button" className="btn btn-dark" id='addBtn'
                     onClick={() => {
-                        saveNoteFun({title,content});
+                        saveNoteFun({ title, content });
                     }}>Add Note</button>
 
             </div>
