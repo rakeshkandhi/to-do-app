@@ -92,6 +92,7 @@ export default function Notes() {
                             <Note
                                 noteItem={note}
                                 index={index}
+                                key={index}
                                 deleteFun={deleteNote}
                                 updateFun={updateNote}
                             />

@@ -10,7 +10,7 @@ export default function Note({ index, noteItem, deleteFun, updateFun }) {
                     <h5 className='card-title'>{noteItem.title}</h5>
                     <p className='card-text'>{noteItem.content}</p>
                 </div>
-                <div class="col-md-12">
+                <div className="col-md-12">
                     <button type="button" className="btn btn-danger"
                         onClick={() => {
                             setEditflag(true);
